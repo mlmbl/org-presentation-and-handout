@@ -1,0 +1,23 @@
+#+OPTIONS: num:nil toc:nil ^:nil title:nil html-postamble:t
+#+LANGUAGE: ja
+#+TITLE: 
+#+SUBTITLE: 
+#+AUTHOR: 
+#+EMAIL: 
+#+DATE: 
+
+* 作業メモ                                                         :noexport:
+
+** アウトライン案
+
+** 思考過程
+
+** 参考メモ
+
+* はじめに
+
+** 
+
+* まとめ
+
+**

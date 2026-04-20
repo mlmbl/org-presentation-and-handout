@@ -1,0 +1,163 @@
+* ox-html-presentation
+
+A CSS + JavaScript presentation system built on top of [[https://orgmode.org/][Org-mode]]'s =ox-html= exporter. Instead of fixed-aspect-ratio slides, this system uses CSS scroll-snap to create a vertical scrolling slideshow that works on any screen size — from smartphones to large monitors.
+
+** Philosophy
+
+Traditional presentation tools (Beamer, reveal.js, PowerPoint) force your content into fixed-size containers. This system takes a different approach: *the document structure itself becomes the presentation experience*. Content never "overflows" a slide — it simply flows naturally, and the browser snaps to each section.
+
+** Features
+
+- *Scroll-snap slideshow* — Smooth, mandatory snap scrolling between sections (h2/h3 level)
+- *Sticky headers* — h2 and h3 headings remain visible while scrolling through content
+- *Title slide* — Automatically generated from =#+TITLE=, =#+SUBTITLE=, =#+AUTHOR=, =#+EMAIL=, =#+DATE=
+- *Closing slide* — Automatically generated from postamble
+- *Responsive typography* — Font size scales with viewport using =clamp()=
+- *Thumbnail + overlay popup* for images, videos, tables, and iframes
+- *Styled lists* — Custom markers for unordered (▶ / › / ・) and ordered lists with hanging indent
+- *Styled tables* — Compact thumbnail view with zoom overlay and sticky thead
+- *Table of contents* — Fixed button in the bottom-right corner
+
+** Files
+
+| File                | Description                                   |
+|---------------------+-----------------------------------------------|
+| =slide.css=         | All styles                                    |
+| =slide.js=          | Sticky header adjustment, overlay popups, TOC |
+| =.dir-locals.el=    | Emacs configuration (per-project)             |
+| =presentation.org=  | Template for your presentation                |
+| =README-sample.org= | Template for your project README              |
+| =sample.org=        | Sample presentation                           |
+
+
+** Emacs Configuration
+
+This repository includes a =.dir-locals.el= file that automatically applies all necessary Emacs settings when you open an Org file in this directory. *No changes to your =init.el= are required.*
+
+The =.dir-locals.el= configures the following:
+
+- =org-html-head= — links =slide.css= and =slide.js= automatically (no need for =#+HTML_HEAD= in your Org file)
+- =org-export-in-background= — set to =nil= for synchronous export
+- =org-html-preamble-format= / =org-html-postamble-format= — generates title and closing slides
+- Various =ox-html= settings for HTML5, scroll-snap-compatible output
+
+The preamble generates the title slide and the postamble generates the closing slide. The =%t=, =%s=, =%a=, =%e=, =%d=, =%c= placeholders are filled from the Org document keywords:
+
+| Placeholder | Org keyword  | Usage                                               |
+|-------------+--------------+-----------------------------------------------------|
+| =%t=        | =#+TITLE=    | Presentation title                                  |
+| =%s=        | =#+SUBTITLE= | Subtitle                                            |
+| =%a=        | =#+AUTHOR=   | Author name and affiliation                         |
+| =%e=        | =#+EMAIL=    | Conference name or venue (not used as actual email) |
+| =%d=        | =#+DATE=     | Date and location                                   |
+| =%c=        | —            | Emacs/Org-mode version (auto-generated)             |
+
+When you first open an Org file in this directory, Emacs will ask whether to apply the local variables. Answer =!= to trust the directory permanently.
+
+** Quickstart
+
+1. Use this repository as a GitHub template to create a new repository
+2. Clone it locally and open =presentation.org= in Emacs
+3. Answer =!= when Emacs asks about local variables
+4. Fill in =#+TITLE=, =#+AUTHOR=, =#+DATE=, etc.
+5. Write your slides, referring to =sample.org= for examples
+6. Export with =M-x org-html-export-to-html=
+7. Open the resulting HTML in a browser
+
+** Usage
+
+*** 1. Start a new presentation
+
+Use this repository as a GitHub template, or copy the files into your project directory:
+
+#+begin_src
+slide.css
+slide.js
+.dir-locals.el
+#+end_src
+
+*** 2. Configure the title slide
+
+#+begin_src org
+,#+OPTIONS: num:nil toc:nil ^:nil title:nil html-postamble:t
+,#+LANGUAGE: ja
+,#+TITLE: Your Presentation Title
+,#+SUBTITLE: Subtitle
+,#+AUTHOR: Your Name · Affiliation
+,#+EMAIL: Conference Name
+,#+DATE: 2026-03-15
+#+end_src
+
+*** 3. Structure your presentation
+
+Use h2 (=**=) for sections and h3 (=***=) for subsections. Each h3 block becomes one snap unit.
+
+#+begin_src org
+,** Section Title
+
+,*** Slide Title
+
+Your content here.
+
+- Bullet point one
+- Bullet point two
+#+end_src
+
+*** 4. Embed media
+
+*Local image:*
+#+begin_src org
+,#+ATTR_HTML: :style width:30vw;
+[[./img/figure.png]]
+#+end_src
+
+*Local video:*
+#+begin_src org
+,#+BEGIN_EXPORT html
+<figure>
+<video preload="auto" muted>
+  <source src="media/video.mp4" type="video/mp4">
+</video>
+<figcaption>Caption here</figcaption>
+</figure>
+,#+END_EXPORT
+#+end_src
+
+*YouTube / Google Maps / iframe:*
+#+begin_src org
+,#+BEGIN_EXPORT html
+<figure>
+<iframe src="https://www.youtube.com/embed/VIDEO_ID"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope"
+        allowfullscreen></iframe>
+<figcaption>Caption here</figcaption>
+</figure>
+,#+END_EXPORT
+#+end_src
+
+*Table with size variant:*
+#+begin_src org
+,#+ATTR_HTML: :class wide
+| Col 1 | Col 2 | Col 3 |
+#+end_src
+
+=:class wide= and =:class x-wide= are available for wider tables.
+
+*** 5. Export
+
+#+begin_src
+M-x org-html-export-to-html
+#+end_src
+
+Open the resulting HTML file in a browser and navigate with trackpad or keyboard.
+
+** Notes
+
+- YouTube and Google Maps require an internet connection and may not work via =file://=. Use a local HTTP server or host the HTML online.
+- The system uses =scroll-snap-type: y mandatory=, which produces crisp slide transitions but may cause slight bounce-back at the bottom of long sections.
+
+** License
+
+MIT
+
+

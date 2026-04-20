@@ -1,0 +1,596 @@
+/* ============================================================
+   scroll-snap スライドショー風 CSS
+   スナップ単位：.outline-3（h3セクション）と header
+   h3 の sticky top は slide.js が実測して設定する
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&display=swap');
+
+html {
+    scroll-snap-type: y mandatory;
+    /* scroll-padding-top は使わず、各要素に scroll-margin-top を設定（slide.js） */
+}
+
+body {
+    margin: 0;
+    font-family:
+        "BIZ UDPGothic",
+        "BIZ UDP Gothic",
+        "Hiragino Kaku Gothic ProN",
+        Meiryo,
+        sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    font-size: clamp(12px, 3vw, 48px);
+    line-height: 1.6;
+    background: white;
+    color: #222222;
+}
+
+h2 {
+  font-size: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+}
+
+h4 {
+    font-size: 1.1em;
+    color: #000080;
+}
+
+h2, h3, h4 {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  margin: 0;
+  padding: 0 2rem;
+}
+
+/* タイトルスライド */
+header {
+    min-height: 100vh;
+    scroll-snap-align: start end;
+    scroll-snap-stop: always;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0;
+}
+
+header .title {
+    background: #000080;
+    color: white;
+    font-size: 1.8em;
+    font-weight: 700;
+    margin: 0;
+    padding: 0.3em 2rem;
+    text-align: left;
+}
+
+header .subtitle {
+    background: #0000FF;
+    color: white;
+    font-size: 1.2em;
+    font-weight: 600;
+    margin: 0;
+    padding: 0.3em 2rem;
+    text-align: left;
+}
+
+header .author {
+    color: #000080;
+    font-size: 1.1em;
+    font-weight: 600;
+    margin: 1em 0 0;
+    padding: 0 2rem;
+    text-align: right;
+}
+
+header .email {
+    color: #666;
+    font-size: 0.7em;
+    margin: 0.2em 0 0;
+    padding: 0 2rem;
+    text-align: right;
+}
+
+header .date {
+    color: #666;
+    font-size: 0.7em;
+    margin: 0.2em 0 0;
+    padding: 0 2rem;
+    text-align: right;
+}
+
+/* 最終スライド */
+footer {
+    min-height: 100vh;
+    scroll-snap-align: start end;
+    scroll-snap-stop: always;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5em;
+}
+
+footer .thanks {
+    background: #0000FF;
+    color: white;
+    font-size: 1.2em;
+    font-weight: 600;
+    margin: 0;
+    padding: 0.3em 2rem;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+footer .creator {
+    color: #aaa;
+    font-size: 0.5em;
+    margin: 0;
+    text-align: center;
+}
+
+/* ============================================================
+   セクションコンテナ
+   ============================================================ */
+
+.outline-2,
+.outline-3 {
+    position: relative;
+    min-height: 100vh;
+}
+
+/* outline-3 は常にsnap */
+.outline-3 {
+    scroll-snap-align: start end;
+    scroll-snap-stop: always;
+}
+
+/* outline-2 は直下のoutline-text-2に中身があるときだけsnap */
+.outline-2:has(> .outline-text-2 > *) {
+    scroll-snap-align: start end;
+    scroll-snap-stop: always;
+}
+
+/* outline-2・outline-3 どちらも先頭・末尾でsnap */
+
+/* ============================================================
+   sticky 見出し
+   ============================================================ */
+
+.outline-2 > h2,
+.outline-3 > h3 {
+  line-height: 1.4;
+}
+
+/* 見出し内リンク */
+.outline-2 > h2 a,
+.outline-3 > h3 a {
+  color: white;
+  text-decoration: none;
+}
+
+.outline-2 > h2 a:hover,
+.outline-3 > h3 a:hover {
+  color: #ffd700;
+}
+
+/* H2：濃いえんじ */
+.outline-2 > h2 {
+  position: sticky;
+  top: 0;
+
+  background: #000080;
+  color: white;
+
+  z-index: 20;
+}
+
+/* H3：やや薄いえんじ（top は slide.js が実測して設定） */
+.outline-3 > h3 {
+  position: sticky;
+  top: 0; /* JSで上書きされる */
+
+  background: #0000FF;
+  color: white;
+
+  z-index: 19;
+}
+
+/* ============================================================
+   本文余白
+   ============================================================ */
+
+.outline-text-2,
+.outline-text-3,
+.outline-text-4 {
+  padding-inline: 2rem;
+}
+
+/* outline-4 もsnapの対象（scroll-margin-top は slide.js が設定） */
+.outline-4 {
+    min-height: 90vh;
+    scroll-snap-align: start end;
+    scroll-snap-stop: always;
+}
+
+.outline-text-2:has(> *) {
+  min-height: 100vh;
+  scroll-snap-align: start end;
+  scroll-snap-stop: always;
+}
+
+/* 箇条書き */
+ul.org-ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+ul.org-ul > li {
+    font-size: 1.05em;
+    padding-left: 0;
+    text-indent: -1.2em;
+    margin-left: 1.2em;
+}
+
+ul.org-ul > li::before {
+    content: "▶ ";
+    font-size: 0.8em;
+    vertical-align: middle;
+}
+
+ul.org-ul > li > ul.org-ul {
+    margin-left: 2rem;
+}
+
+ul.org-ul > li > ul.org-ul > li {
+    font-size: 0.95em;
+    text-indent: -1em;
+    margin-left: 1em;
+}
+
+ul.org-ul > li > ul.org-ul > li::before {
+    content: "» ";
+    font-size: 1em;
+}
+
+ul.org-ul > li > ul.org-ul > li > ul.org-ul {
+    margin-left: 4rem;
+}
+
+ul.org-ul > li > ul.org-ul > li > ul.org-ul > li {
+    font-size: 0.7em;
+    text-indent: -1em;
+    margin-left: 1em;
+}
+
+ul.org-ul > li > ul.org-ul > li > ul.org-ul > li::before {
+    content: "・";
+    font-size: 1em;
+}
+
+/* 番号つき箇条書き */
+ol.org-ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: ol-counter;
+}
+
+ol.org-ol > li {
+    font-size: 1.05em;
+    counter-increment: ol-counter;
+    text-indent: -1.5em;
+    margin-left: 1.5em;
+}
+
+ol.org-ol > li::before {
+    content: counter(ol-counter) ". ";
+    font-size: 0.7em;
+    font-weight: 700;
+}
+
+ol.org-ol > li > ol.org-ol {
+    margin-left: 2rem;
+    counter-reset: ol-counter;
+}
+
+ol.org-ol > li > ol.org-ol > li {
+    font-size: 0.95em;
+    text-indent: -1.5em;
+    margin-left: 1.5em;
+}
+
+ol.org-ol > li > ol.org-ol > li > ol.org-ol {
+    margin-left: 4rem;
+    counter-reset: ol-counter;
+}
+
+ol.org-ol > li > ol.org-ol > li > ol.org-ol > li {
+    font-size: 0.7em;
+    text-indent: -1.5em;
+    margin-left: 1.5em;
+}
+
+/* 表 */
+table {
+    border-collapse: collapse;
+    font-size: 0.27em;
+    max-width: 30vw;
+    max-height: 40vh;
+    display: block;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    margin: 0.5em auto;
+    cursor: pointer;
+}
+
+/* 表サイズクラス */
+table.wide {
+    font-size: 0.162em;
+}
+
+table.x-wide {
+    font-size: 0.108em;
+}
+
+caption {
+    caption-side: top;
+    display: table-caption;
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.3em;
+    text-align: center;
+}
+
+thead tr {
+    background: #000080;
+    color: white;
+}
+
+thead th {
+    padding: 0.4em 1em;
+    font-weight: 600;
+    border: 1px solid #000060;
+}
+
+tbody tr {
+    background: #f0f0ff;
+}
+
+tbody tr:nth-child(even) {
+    background: #d8d8f8;
+}
+
+tbody td {
+    padding: 0.35em 1em;
+    border: 1px solid #aaaacc;
+    color: #222;
+}
+
+/* 表ポップアップ */
+.table-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+}
+
+.table-overlay.active {
+    display: flex;
+}
+
+.table-overlay table {
+    font-size: 0.9em;
+    max-width: 90vw;
+    max-height: 90vh;
+    display: block;
+    overflow-y: auto;
+    cursor: default;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.table-overlay table.wide {
+    font-size: 0.54em;
+}
+
+.table-overlay table.x-wide {
+    font-size: 0.36em;
+}
+
+.table-overlay caption {
+    font-size: 2rem;
+    color: white;
+}
+
+.table-overlay thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: #000080;
+}
+
+/* 図 */
+figure {
+    text-align: center;
+    margin: 0.5em auto 0.5em calc(50% - 5vw);
+    cursor: pointer;
+    border: 1px solid #aaaacc;
+    border-radius: 8px;
+    padding: 0.5em;
+    display: block;
+    width: fit-content;
+    transform: translateX(-50%);
+}
+
+figcaption {
+    font-size: 0.4em;
+    color: #666;
+    text-align: center;
+    margin: 0.2em 0;
+}
+
+figure img {
+    width: 20vw;
+    height: auto;
+}
+
+/* 図ポップアップ */
+.figure-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+}
+
+.figure-overlay.active {
+    display: flex;
+}
+
+.figure-overlay img {
+    min-width: 85vw;
+    min-height: 85vh;
+    max-width: 95vw;
+    max-height: 95vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* 動画（figure内） */
+figure video {
+    width: 20vw;
+    height: auto;
+    display: block;
+}
+
+/* 動画ポップアップ */
+.video-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+}
+
+.video-overlay.active {
+    display: flex;
+}
+
+.video-overlay video {
+    max-width: 90vw;
+    max-height: 90vh;
+    width: auto;
+    height: auto;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* iframe（figure内） */
+figure iframe {
+    width: 20vw;
+    height: 15vw;
+    border: none;
+    display: block;
+}
+
+/* iframeポップアップ */
+.iframe-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+}
+
+.iframe-overlay.active {
+    display: flex;
+}
+
+.iframe-overlay iframe {
+    width: 90vw;
+    height: 90vh;
+    border: none;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* 目次 */
+#toc-button {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 200;
+    background: #000080;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+#toc-button:hover {
+    background: #0000FF;
+}
+
+#toc-panel {
+    display: none;
+    position: fixed;
+    bottom: 5rem;
+    right: 1.5rem;
+    z-index: 200;
+    background: white;
+    border: 1px solid #aaaacc;
+    border-radius: 8px;
+    padding: 1em;
+    max-height: 70vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 16px rgba(0, 0, 128, 0.2);
+    width: fit-content;
+}
+
+#toc-panel.active {
+    display: block;
+}
+
+#toc-panel a {
+    display: block;
+    color: #222;
+    text-decoration: none;
+    padding: 0.2em 0;
+    font-size: 0.8rem;
+}
+
+#toc-panel a:hover {
+    color: #0000FF;
+}
+
+#toc-panel a.toc-h2 {
+    font-weight: 700;
+    color: #000080;
+    margin-top: 0.5em;
+}
+
+#toc-panel a.toc-h3 {
+    padding-left: 1em;
+    font-weight: 400;
+}
