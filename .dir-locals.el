@@ -2,7 +2,8 @@
 ((nil
   . ((git-auto-commit-mode . 1)))
  (org-mode
-  . ((org-export-in-background . nil)
+  . (;; ─── HTML プレゼン ────────────────────────────────────────────────────
+     (org-export-in-background . nil)
      (org-html-head . "<link rel=\"stylesheet\" href=\"slide.css\">\n<script src=\"slide.js\" defer></script>")
      (org-html-doctype . "html5")
      (org-html-html5-fancy . t)
@@ -44,5 +45,41 @@
      (org-html-htmlize-output-type . css)
      (org-html-validation-link . nil)
      (org-html-toc-default-depth . 3)
-     (org-html-prefer-user-labels . t))))
+     (org-html-prefer-user-labels . t)
+
+     ;; ─── LaTeX エクスポート ───────────────────────────────────────────────
+     (org-latex-default-class . "handout-jlreq")
+     (org-latex-default-packages-alist
+      . (("" "graphicx" t)
+         ("" "hyperref" t)))
+     ;; (org-latex-subtitle-separate . nil)
+     ;; (org-latex-subtitle-format . "\\\\{\\sffamily\\large %s}")
+     (org-latex-title-command
+      . "\\noindent\\rule{\\linewidth}{1pt}
+\\begin{flushleft}
+  {\\sffamily\\Large %t}\\if\\relax\\detokenize{%s}\\relax\\else\\\\
+  {\\sffamily\\large %s}\\fi
+\\end{flushleft}
+\\vspace{1\\baselineskip}
+\\begin{flushright}
+  %a\\\\
+  %d\\\\
+  %D
+\\end{flushright}
+\\noindent\\hrulefill\\\\
+\\textbf{Keywords:} %k")
+     (eval
+      . (add-to-list 'org-latex-classes
+                     '("handout-jlreq"
+                       "\\documentclass[paper=a4,
+               luatex,
+               head_space=25mm,
+               foot_space=25mm,
+               gutter=25mm,
+               fore-edge=25mm]{jlreq}
+[DEFAULT-PACKAGES]
+[NO-PACKAGES]"
+                       ("\\section{%s}" . "\\section*{%s}")
+                       ("\\subsection{%s}" . "\\subsection*{%s}")
+                       ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))))))
 

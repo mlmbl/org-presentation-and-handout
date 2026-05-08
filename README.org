@@ -1,4 +1,4 @@
-* ox-html-presentation
+* org-html-presentation-and-handout
 
 A CSS + JavaScript presentation system built on top of [[https://orgmode.org/][Org-mode]]'s =ox-html= exporter. Instead of fixed-aspect-ratio slides, this system uses CSS scroll-snap to create a vertical scrolling slideshow that works on any screen size — from smartphones to large monitors.
 
